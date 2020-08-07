@@ -1,0 +1,29 @@
+[package]
+name = "async-stream-http-tunnel-grader"
+version = "0.1.0"
+authors = ["vkill <vkill.net@gmail.com>"]
+edition = "2018"
+description = "Asynchronous stream http tunnel grader."
+license = "Apache-2.0 OR MIT"
+repository = "https://github.com/bk-rs/async-stream-http-tunnel-grader"
+homepage = "https://github.com/bk-rs/async-stream-http-tunnel-grader"
+documentation = "https://docs.rs/async-stream-http-tunnel-grader"
+keywords = []
+categories = ["asynchronous"]
+readme = "README.md"
+
+[features]
+async_http1_lite_client = ["async-http1-lite"]
+
+[dependencies]
+async-stream-packed = { version = "0.1", default-features = false, features = ["http"] }
+futures-io = { version = "0.3", default-features = false, features = ["std"] }
+async-trait = { version = "0.1", default-features = false, features = [] }
+base64 = { version = "0.12", default-features = false, features = ["std"] }
+
+async-http1-lite = { version = "0.1", default-features = false, features = [], optional = true }
+
+[workspace]
+members = [
+    "demos/smol",
+]

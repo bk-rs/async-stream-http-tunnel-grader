@@ -1,0 +1,15 @@
+[package]
+name = "async-stream-http-tunnel-grader-demo-smol"
+version = "0.1.0"
+authors = ["vkill <vkill.net@gmail.com>"]
+edition = "2018"
+
+[[bin]]
+name = "async_http1_lite_client"
+path = "src/async_http1_lite_client.rs"
+
+[dependencies]
+async-stream-http-tunnel-grader = { path = "../..", version = "0.1", features = ["async_http1_lite_client"] }
+async-stream-packed = { version = "0.1", default-features = false, features = ["http"] }
+futures-lite = "0.1"
+async-net = "0.1"
