@@ -23,6 +23,10 @@ base64 = { version = "0.12", default-features = false, features = ["std"] }
 
 async-http1-lite = { version = "0.1", default-features = false, features = [], optional = true }
 
+[dev-dependencies]
+futures-lite = { version = "0.1", default-features = false, features = [] }
+async-net = { version = "0.1", default-features = false, features = [] }
+
 [workspace]
 members = [
     "demos/smol",

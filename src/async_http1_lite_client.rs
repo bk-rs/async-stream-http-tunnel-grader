@@ -1,17 +1,18 @@
 use std::io;
 
 pub use async_http1_lite::message::http::{HeaderMap, HeaderValue};
+pub use async_http1_lite::Http1ClientStream;
 use async_http1_lite::{
     message::http::{
         header::{ACCEPT, HOST, PROXY_AUTHORIZATION, USER_AGENT},
         Method, Version,
     },
-    Http1ClientStream, Request,
+    Request,
 };
 use async_trait::async_trait;
 use futures_io::{AsyncRead, AsyncWrite};
 
-use async_stream_packed::{Downgrader, HttpTunnelGrader, Upgrader, UpgraderExtRefer};
+use async_stream_packed::{Downgrader, HttpTunnelClientGrader, Upgrader, UpgraderExtRefer};
 
 use crate::authorization::Authorization;
 
@@ -107,7 +108,7 @@ where
     }
 }
 
-impl<S> HttpTunnelGrader<S> for AsyncHttp1LiteClientHttpTunnelGrader where
+impl<S> HttpTunnelClientGrader<S> for AsyncHttp1LiteClientHttpTunnelGrader where
     S: AsyncRead + AsyncWrite + Unpin + Send + 'static
 {
 }
