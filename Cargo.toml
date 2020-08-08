@@ -13,13 +13,15 @@ categories = ["asynchronous"]
 readme = "README.md"
 
 [features]
-async_http1_lite_client = ["async-http1-lite"]
+authorization = ["base64"]
+async_http1_lite_client = ["authorization", "async-http1-lite"]
 
 [dependencies]
 async-stream-packed = { version = "0.1", default-features = false, features = ["http"] }
 futures-io = { version = "0.3", default-features = false, features = ["std"] }
 async-trait = { version = "0.1", default-features = false, features = [] }
-base64 = { version = "0.12", default-features = false, features = ["std"] }
+
+base64 = { version = "0.12", default-features = false, features = ["std"], optional = true }
 
 async-http1-lite = { version = "0.1", default-features = false, features = [], optional = true }
 

@@ -1,4 +1,6 @@
+#[cfg(feature = "authorization")]
 mod authorization;
+#[cfg(feature = "authorization")]
 pub use authorization::Authorization;
 
 #[cfg(feature = "async_http1_lite_client")]
