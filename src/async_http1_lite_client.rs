@@ -16,23 +16,23 @@ use async_stream_packed::{Downgrader, HttpTunnelGrader, Upgrader, UpgraderExtRef
 use crate::authorization::Authorization;
 
 pub struct AsyncHttp1LiteClientHttpTunnelGrader {
-    host: String,
-    port: u16,
-    authorization: Option<Authorization>,
-    headers: Option<HeaderMap<HeaderValue>>,
+    remote_host: String,
+    remote_port: u16,
+    proxy_authorization: Option<Authorization>,
+    proxy_headers: Option<HeaderMap<HeaderValue>>,
 }
 impl AsyncHttp1LiteClientHttpTunnelGrader {
     pub fn new(
-        host: String,
-        port: u16,
-        authorization: Option<Authorization>,
-        headers: Option<HeaderMap<HeaderValue>>,
+        remote_host: String,
+        remote_port: u16,
+        proxy_authorization: Option<Authorization>,
+        proxy_headers: Option<HeaderMap<HeaderValue>>,
     ) -> Self {
         Self {
-            host,
-            port,
-            authorization,
-            headers,
+            remote_host,
+            remote_port,
+            proxy_authorization,
+            proxy_headers,
         }
     }
 }
@@ -46,7 +46,7 @@ where
     async fn upgrade(&mut self, stream: S) -> io::Result<Self::Output> {
         let mut stream = Http1ClientStream::new(stream);
 
-        let authority = format!("{}:{}", self.host, self.port);
+        let authority = format!("{}:{}", self.remote_host, self.remote_port);
 
         let mut request = Request::builder()
             .method(Method::CONNECT)
@@ -55,7 +55,7 @@ where
             .body(vec![])
             .map_err(|err| io::Error::new(io::ErrorKind::InvalidInput, err))?;
 
-        if let Some(authorization) = &self.authorization {
+        if let Some(authorization) = &self.proxy_authorization {
             request.headers_mut().insert(
                 PROXY_AUTHORIZATION,
                 authorization
@@ -65,7 +65,7 @@ where
             );
         }
 
-        let mut headers = self.headers.clone().unwrap_or_default();
+        let mut headers = self.proxy_headers.clone().unwrap_or_default();
         headers.insert(
             HOST,
             HeaderValue::from_str(authority.as_str())
