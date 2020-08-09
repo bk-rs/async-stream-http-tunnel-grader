@@ -14,7 +14,10 @@ readme = "README.md"
 
 [features]
 authorization = ["base64"]
-async_http1_lite_client = ["authorization", "async-http1-lite"]
+
+unionable_client = []
+
+async_http1_lite_client = ["authorization", "unionable_client", "async-http1-lite"]
 
 [dependencies]
 async-stream-packed = { version = "0.1", default-features = false, features = ["http"] }

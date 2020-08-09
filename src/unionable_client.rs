@@ -18,6 +18,7 @@ where
     S: AsyncRead + AsyncWrite + Unpin + Send + 'static,
 {
     type Output = UnionableHttpTunnelStream<S>;
+    #[allow(unused_variables)]
     async fn upgrade(&mut self, stream: S) -> io::Result<Self::Output> {
         match self {
             #[cfg(feature = "async_http1_lite_client")]
@@ -25,6 +26,8 @@ where
                 let stream = grader.upgrade(stream).await?;
                 Ok(UnionableHttpTunnelStream::AsyncHttp1Lite(stream))
             }
+            #[cfg(all(not(feature = "async_http1_lite_client")))]
+            _ => unreachable!(),
         }
     }
 }
@@ -34,6 +37,7 @@ impl<S> Downgrader<S> for UnionableHttpTunnelClientGrader
 where
     S: AsyncRead + AsyncWrite + Unpin + Send + 'static,
 {
+    #[allow(unused_variables)]
     async fn downgrade(&mut self, output: <Self as Upgrader<S>>::Output) -> io::Result<S> {
         match self {
             #[cfg(feature = "async_http1_lite_client")]
@@ -41,6 +45,8 @@ where
                 #[cfg(feature = "async_http1_lite_client")]
                 UnionableHttpTunnelStream::AsyncHttp1Lite(stream) => grader.downgrade(stream).await,
             },
+            #[cfg(all(not(feature = "async_http1_lite_client")))]
+            _ => unreachable!(),
         }
     }
 }
@@ -73,6 +79,8 @@ where
 {
     #[cfg(feature = "async_http1_lite_client")]
     AsyncHttp1Lite(crate::async_http1_lite_client::Http1ClientStream<S>),
+    #[cfg(all(not(feature = "async_http1_lite_client")))]
+    Never(std::marker::PhantomData<S>),
 }
 
 macro_rules! unionable_http_tunnel_stream {
@@ -80,10 +88,13 @@ macro_rules! unionable_http_tunnel_stream {
         match $value {
             #[cfg(feature = "async_http1_lite_client")]
             UnionableHttpTunnelStream::AsyncHttp1Lite($pattern) => $result,
+            #[cfg(all(not(feature = "async_http1_lite_client")))]
+            UnionableHttpTunnelStream::Never(_) => unreachable!(),
         }
     };
 }
 
+#[allow(unused_variables)]
 impl<S> UnionableHttpTunnelStream<S>
 where
     S: AsyncRead + AsyncWrite + Unpin + Send,
@@ -96,6 +107,7 @@ where
     }
 }
 
+#[allow(unused_variables)]
 impl<S> AsyncRead for UnionableHttpTunnelStream<S>
 where
     S: AsyncRead + AsyncWrite + Unpin + Send,
@@ -109,6 +121,7 @@ where
     }
 }
 
+#[allow(unused_variables)]
 impl<S> AsyncWrite for UnionableHttpTunnelStream<S>
 where
     S: AsyncRead + AsyncWrite + Unpin + Send,

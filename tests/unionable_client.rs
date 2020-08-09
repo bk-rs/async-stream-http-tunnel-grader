@@ -1,3 +1,10 @@
+#[cfg(feature = "unionable_client")]
+#[cfg(test)]
+mod unionable_client_tests {
+    #[allow(unused_imports)]
+    use async_stream_http_tunnel_grader::UnionableHttpTunnelClientGrader;
+}
+
 #[cfg(feature = "async_http1_lite_client")]
 #[cfg(test)]
 mod unionable_client_with_async_http1_lite_client_tests {
