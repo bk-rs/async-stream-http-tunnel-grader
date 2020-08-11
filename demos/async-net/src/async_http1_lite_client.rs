@@ -1,5 +1,5 @@
 /*
-cargo run -p async-stream-http-tunnel-grader-demo-smol --bin async_http1_lite_client 127.0.0.1 8118 httpbin.org 80 /ip
+cargo run -p async-stream-http-tunnel-grader-demo-async-net --bin async_http1_lite_client 127.0.0.1 8118 httpbin.org 80 /ip
 */
 
 use std::env;

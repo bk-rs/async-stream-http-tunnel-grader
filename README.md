@@ -4,9 +4,9 @@
 
 ## Examples
 
-### smol 
+### async-net 
 
-* [async_http1_lite_client](demos/smol/src/async_http1_lite_client.rs)
+* [async_http1_lite_client](demos/async-net/src/async_http1_lite_client.rs)
 
 ## Dev
 
